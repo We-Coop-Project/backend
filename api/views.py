@@ -7,11 +7,18 @@ from rest_framework.response import Response
 from .models import User_status, Company
 from .serializers import UserStatusSerializer, CompanySerializer
 
+@api_view(['GET'])
 def Home(request):
-    return HttpResponse('<h1>Hello Django</h1>')
+    api_url = {
+        '/user_status': 'Get all user_statuses and Create a new user_status',
+        '/user_status/<str:pk>': 'Get specific user_statuses',
+        '/company': 'Get all companies and Create a new company',
+        '/company/<str:pk>': 'Get specific company',
+    }
+    return Response(api_url)
 
 @api_view(['GET', 'POST'])
-def accessUserStatuses(request):
+def accessAllUserStatuses(request):
     if request.method == 'GET':
         user_statuses = User_status.objects.all()
         serializer = UserStatusSerializer(user_statuses, many=True)
@@ -25,31 +32,33 @@ def accessUserStatuses(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def getUserStatus(request, pk):
+    user_statuses = User_status.objects.get(uid=pk)
+    serializer = UserStatusSerializer(user_statuses, many=False)
+    print(serializer.data)
+    return Response(serializer.data)
+
+
 @api_view(['GET', 'POST'])
-def accessCompanies(request):
+def accessAllCompanies(request):
     if request.method == 'GET':
         companies = Company.objects.all()
         serializer = CompanySerializer(companies, many=True)
         return Response(serializer.data)
-
+    
     elif request.method == 'POST':
-        # data = request.data
-        # print(data)
-        # new_companies = Company.objects.create(
-        #     name=data['name'],
-        #     start_date=data['start_date'],
-        #     end_date=data['end_date'],
-        # )
-        # print(new_companies)
-        # new_companies.save()
-
-        # for user_status in data['user_statuses']:
-        #     user_status_obj = User_status.objects.get(coop_start_date=user_status['coop_start_date'])
-        #     new_companies.user_statuses.add(user_status_obj)
-            
         serializer = CompanySerializer(data=request.data)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def getCompany(request, pk):
+    if request.method == 'GET':
+        companies = Company.objects.get(id=pk)
+        serializer = CompanySerializer(companies, many=False)
+        print(serializer.data)
+        return Response(serializer.data)

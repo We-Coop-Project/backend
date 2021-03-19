@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_status, Company
+from .models import User_status, Company, HireType
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class CompanyAdmin(admin.ModelAdmin):
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(User_status)
+admin.site.register(HireType)

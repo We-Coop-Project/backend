@@ -1,28 +1,31 @@
 from rest_framework import serializers
-from .models import User_status, Company
+from .models import User_status, Company, HireType
 
-class UserStatusSerializer(serializers.ModelSerializer):
+class HireTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User_status
+        model = HireType
         fields = '__all__'
 
-
 class CompanySerializer(serializers.ModelSerializer):
-    user_statuses = UserStatusSerializer(many=True)
-
     class Meta:
         model = Company
         fields = '__all__'
-        depth = 1
 
+class UserStatusSerializer(serializers.ModelSerializer):
+    company_statuses = CompanySerializer(many=True)
+    class Meta:
+        model = User_status
+        fields = '__all__'
+        depth = 1
+    
     def create(self, validated_data):
-        user_statuses_data = validated_data.pop('user_statuses')
-        company = Company.objects.create(**validated_data)
-        company.save()
+        company_statuses_data = validated_data.pop('company_statuses')
+        user_status = User_status.objects.create(**validated_data)
+        user_status.save()
         
-        for user_status_data in user_statuses_data:
-            user_status = User_status.objects.filter(working_time=user_status_data['working_time']).first()
-            if user_status is None:
-                user_status = User_status.objects.create(**user_status_data)
-            company.user_statuses.add(user_status)
-        return company
+        for company_status_data in company_statuses_data:
+            company = Company.objects.filter(name=company_status_data['name']).first()
+            if company is None:
+                company = Company.objects.create(**company_status_data)
+            user_status.company_statuses.add(company)
+        return user_status
