@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import User_status, Company
-from .serializers import UserStatusSerializer, CompanySerializer
+from ..models.api_v1 import User_status, Company
+from ..serializers.api_v1 import UserStatusSerializer, CompanySerializer
 
 @api_view(['GET'])
 def Home(request):

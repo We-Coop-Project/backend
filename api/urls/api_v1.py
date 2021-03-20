@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Home, accessAllUserStatuses, getUserStatus, accessAllCompanies, getCompany
+from ..views.api_v1 import Home, accessAllUserStatuses, getUserStatus, accessAllCompanies, getCompany
 
 urlpatterns = [
     path('', Home),
