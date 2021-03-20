@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User_status, Company, HireType
+from ..models.api_v2 import User_status, Company, HireType
 
 class HireTypeSerializer(serializers.ModelSerializer):
     class Meta:
