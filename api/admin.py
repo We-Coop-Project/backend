@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import User_status, Company, HireType
-
-
+from .models.api_v1 import User_status, Company, HireType
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'start_date', 'end_date')
     # list_display_links = None
