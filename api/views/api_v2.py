@@ -35,7 +35,7 @@ def accessAllUserStatuses(request):
 @api_view(['GET'])
 def getUserStatus(request, pk):
     user_status = UserStatus.objects.get(uid=pk)
-    serializer = UserStatusSerializer(UserStatus, many=False)
+    serializer = UserStatusSerializer(user_status, many=False)
     print(serializer.data)
     return Response(serializer.data)
 
