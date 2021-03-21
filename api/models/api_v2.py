@@ -11,37 +11,22 @@ class HireType(models.Model):
     name = models.CharField(
         max_length=255,
         choices=COMPANY_TYPE_CHOICES,
+        primary_key=True
     )
-    
-    def __str__(self):
-        return self.name
-
-class Company(models.Model):
-    name = models.CharField(max_length=255)
-    working_time = models.IntegerField(blank=True, null=True)
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    hire_type = models.ForeignKey(HireType, on_delete=models.CASCADE)
-    
-    class Meta:
-        db_table = 'companies'
-        verbose_name = 'company List'
-        verbose_name_plural = 'companies'
     
     def __str__(self):
         return self.name
 
-
-class User_status(models.Model):
+class UserStatus(models.Model):
     uid = models.CharField(max_length=100, primary_key=True)
     coop_start_date = models.DateField()
     coop_end_date = models.DateField()
     coop_hours = models.IntegerField()
+    week_coop_working_hours =  models.IntegerField(blank=True, null=True)
+    week_non_coop_working_hours =  models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    company_statuses = models.ManyToManyField(Company, blank=True)
 
     class Meta:
         db_table = 'user_statuses'
@@ -52,3 +37,21 @@ class User_status(models.Model):
     
     def __str__(self):
         return self.uid
+
+class Company(models.Model):
+    name = models.CharField(max_length=255)
+    working_time = models.DecimalField(max_digits=6, decimal_places=1, blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    hire_type = models.ForeignKey(HireType, on_delete=models.CASCADE, related_name='hire_type')
+    user = models.ForeignKey(UserStatus, on_delete=models.CASCADE, related_name='company_status')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'companies'
+        verbose_name = 'company List'
+        verbose_name_plural = 'companies'
+    
+    def __str__(self):
+        return self.name

@@ -12,6 +12,8 @@ class HireType(models.Model):
         max_length=255,
         choices=COMPANY_TYPE_CHOICES,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.name
@@ -22,9 +24,9 @@ class Company(models.Model):
     working_time = models.IntegerField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    hire_type = models.ForeignKey(HireType, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    hire_type = models.ForeignKey(HireType, on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'companies'
@@ -40,9 +42,9 @@ class User_status(models.Model):
     coop_start_date = models.DateField()
     coop_end_date = models.DateField()
     coop_hours = models.IntegerField()
+    company_statuses = models.ManyToManyField(Company, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    company_statuses = models.ManyToManyField(Company, blank=True)
 
     class Meta:
         db_table = 'user_statuses'

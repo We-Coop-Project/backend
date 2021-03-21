@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from ..models.api_v2 import User_status, Company
+from ..models.api_v2 import UserStatus, Company
 from ..serializers.api_v2 import UserStatusSerializer, CompanySerializer
 
 @api_view(['GET'])
@@ -20,7 +20,7 @@ def Home(request):
 @api_view(['GET', 'POST'])
 def accessAllUserStatuses(request):
     if request.method == 'GET':
-        user_statuses = User_status.objects.all()
+        user_statuses = UserStatus.objects.all()
         serializer = UserStatusSerializer(user_statuses, many=True)
         return Response(serializer.data)
 
@@ -34,8 +34,8 @@ def accessAllUserStatuses(request):
 
 @api_view(['GET'])
 def getUserStatus(request, pk):
-    user_statuses = User_status.objects.get(uid=pk)
-    serializer = UserStatusSerializer(user_statuses, many=False)
+    user_status = UserStatus.objects.get(uid=pk)
+    serializer = UserStatusSerializer(UserStatus, many=False)
     print(serializer.data)
     return Response(serializer.data)
 
@@ -58,7 +58,17 @@ def accessAllCompanies(request):
 @api_view(['GET'])
 def getCompany(request, pk):
     if request.method == 'GET':
-        companies = Company.objects.get(id=pk)
-        serializer = CompanySerializer(companies, many=False)
+        company = Company.objects.get(id=pk)
+        serializer = CompanySerializer(company, many=False)
         print(serializer.data)
         return Response(serializer.data)
+
+
+
+# @api_view(['GET'])
+# def getCompany(request, pk):
+#     if request.method == 'GET':
+#         user_status = User_status.objects.get(id=pk)
+#         serializer = CompanySerializer(user_status, many=False)
+#         print(serializer.data)
+#         return Response(serializer.data)
