@@ -10,7 +10,6 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
-        depth = 1
 
 class UserStatusSerializer(serializers.ModelSerializer):
     # company_statuses = CompanySerializer()
