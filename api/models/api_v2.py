@@ -22,9 +22,9 @@ class UserStatus(models.Model):
     uid = models.CharField(max_length=100, primary_key=True)
     coop_start_date = models.DateField()
     coop_end_date = models.DateField()
-    coop_hours = models.IntegerField(default=0)
-    week_coop_working_hours =  models.IntegerField(blank=True, null=True, default=0)
-    week_non_coop_working_hours =  models.IntegerField(blank=True, null=True, default=0)
+    coop_hours = models.DecimalField(max_digits=6, decimal_places=1, default=0)
+    week_coop_working_hours =  models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True, default=0)
+    week_non_coop_working_hours =  models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -41,8 +41,7 @@ class UserStatus(models.Model):
 class Company(models.Model):
     name = models.CharField(max_length=255)
     working_time = models.DecimalField(max_digits=6, decimal_places=1, blank=True, null=True, default=0)
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
+    working_days = models.IntegerField(blank=True, null=True, default=0)
     hire_type = models.ForeignKey(HireType, on_delete=models.CASCADE, related_name='hire_type')
     user = models.ForeignKey(UserStatus, on_delete=models.CASCADE, related_name='company_status')
     created_at = models.DateTimeField(auto_now_add=True)
