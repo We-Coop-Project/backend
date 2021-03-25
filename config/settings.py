@@ -135,3 +135,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://we-coop.netlify.app",
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
